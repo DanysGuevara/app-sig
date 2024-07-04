@@ -44,7 +44,4 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export function GET(res: NextResponse) {
-    return NextResponse.json({ message: 'Hello world' }, { status: 200 });
-}
 
