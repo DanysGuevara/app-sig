@@ -1,13 +1,56 @@
+"use client"
 import Link from "next/link"
+import { useState } from "react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
+import GenreForm from "@/components/GenreForm";
+import RegionForm from "@/components/RegionForm";
+import UploadRomForm from "@/components/UploadRomForm";
+import UploadImageForm from "@/components/UploadImageForm";
 import { SVGProps } from "react"
 
-export default function Component() {
+export default function DashboardPage() {
+  const [activeTab, setActiveTab] = useState("Roms");
+
+  const renderForm = () => {
+    switch (activeTab) {
+      case "Roms":
+        return (
+          <>
+            <Card x-chunk="dashboard-04-chunk-1">
+              <CardHeader>
+                <CardTitle>Create Roms</CardTitle>
+                <CardDescription>
+                  This form allows you to create a new ROM
+                  for your store. you must upload the roms file before saving
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form>
+                  <Input placeholder="Store Name" />
+                </form>
+                <UploadRomForm />
+                <UploadImageForm />
+              </CardContent>
+              <CardFooter className="border-t px-6 py-4">
+                <Button>Save</Button>
+              </CardFooter>
+            </Card>
+          </>
+        );
+      case "Genres":
+        return <GenreForm />;
+      case "Regions":
+        return <RegionForm />;
+      default:
+        return null;
+    }
+  };
+  
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -80,63 +123,18 @@ export default function Component() {
         </div>
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
           <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
-            <Link href="#" className="font-semibold text-primary" prefetch={false}>
-              General
-            </Link>
-            <Link href="#" prefetch={false}>
-              Security
-            </Link>
-            <Link href="#" prefetch={false}>
-              Integrations
-            </Link>
-            <Link href="#" prefetch={false}>
-              Support
-            </Link>
-            <Link href="#" prefetch={false}>
-              Organizations
-            </Link>
-            <Link href="#" prefetch={false}>
-              Advanced
-            </Link>
+            <span onClick={() => setActiveTab("Roms")} className={`font-semibold ${activeTab === "Roms" ? "text-primary" : ""}`}>
+              Roms
+            </span>
+            <span onClick={() => setActiveTab("Genres")} className={`font-semibold ${activeTab === "Genres" ? "text-primary" : ""}`}>
+              Genres
+            </span>
+            <span onClick={() => setActiveTab("Regions")} className={`font-semibold ${activeTab === "Regions" ? "text-primary" : ""}`}>
+              Regions
+            </span>
           </nav>
           <div className="grid gap-6">
-            <Card x-chunk="dashboard-04-chunk-1">
-              <CardHeader>
-                <CardTitle>Create Roms</CardTitle>
-                <CardDescription>This form allows you to create a new ROM</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form>
-                  <Input placeholder="Store Name" />
-                </form>
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
-            </Card>
-            <Card x-chunk="dashboard-04-chunk-2">
-              <CardHeader>
-                <CardTitle>Plugins Directory</CardTitle>
-                <CardDescription>The directory within your project, in which your plugins are located.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="flex flex-col gap-4">
-                  <Input placeholder="Project Name" defaultValue="/content/plugins" />
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="include" defaultChecked />
-                    <label
-                      htmlFor="include"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Allow administrators to change the directory.
-                    </label>
-                  </div>
-                </form>
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
-            </Card>
+                {renderForm()}
           </div>
         </div>
       </main>

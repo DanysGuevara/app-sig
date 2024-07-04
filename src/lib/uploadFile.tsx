@@ -1,33 +1,26 @@
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/firebase/firebaseConfig';
 
-const uploadFile = async (file: File): Promise<string> => {
-  if (!file) {
-    throw new Error('No file provided');
-  }
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "@/firebase/firebaseConfig";
 
-  const storageRef = ref(storage, `roms/${file.name}`);
-  const uploadTask = uploadBytesResumable(storageRef, file);
-
+export const uploadFile = async (file: File,ruta:string) => {
   return new Promise((resolve, reject) => {
+    const storageRef = ref(storage, `${ruta}/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
     uploadTask.on(
-      'state_changed',
+      "state_changed",
       (snapshot) => {
-        // Puedes agregar aquí lógica para mostrar el progreso de la subida
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
       },
       (error) => {
-        // Manejo de errores
         reject(error);
       },
-      async () => {
-        // Subida completada con éxito
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        resolve(downloadURL);
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          resolve(downloadURL);
+        });
       }
     );
   });
 };
-
-export default uploadFile;
