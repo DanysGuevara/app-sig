@@ -4,7 +4,11 @@ import { uploadFile } from "@/lib/uploadFile";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const UploadImageForm: React.FC = () => {
+interface UploadImageFormProps {
+  onUpload: (file: File) => void;
+}
+
+const UploadImageForm: React.FC<UploadImageFormProps> = ({ onUpload }) => {
   const [file, setFile] = useState<File | null>(null);
   const [downloadURL, setDownloadURL] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,6 +17,7 @@ const UploadImageForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
+      onUpload(e.target.files[0]);
     }
   };
 

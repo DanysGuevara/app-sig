@@ -8,21 +8,34 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import Link from "next/link";
 import { SVGProps } from "react";
 
-export default function CardGames() {
+interface CardGamesProps {
+  title: string;
+  description: string;
+  image: string;
+  genre: string;
+  region: string;
+  download: string;
+}
+
+export default function CardGames({ title, description, image, genre, region,download }: CardGamesProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const handlePlayClick = () => {
+     const link = document.createElement("a");
+    link.href = download;
+    link.download = title;
+    link.click();
     setIsPlaying(true);
     setTimeout(() => setIsPlaying(false), 1000);
   };
+
   return (
     <Card className="w-full max-w-sm rounded-lg shadow-lg">
       <div className="relative">
         <Image
           priority
-          src="https://firebasestorage.googleapis.com/v0/b/storage-39b2e.appspot.com/o/games%2FPokemon_-_Fire_Red_Version_poster.webp?alt=media&token=bccc7caf-693f-46af-8d26-594301f5aa40"
+          src={image}
           alt="Game Thumbnail"
           width={320}
           height={200}
@@ -45,20 +58,18 @@ export default function CardGames() {
             variant="outline"
             className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-xs"
           >
-            RPG
+            {genre}
           </Badge>
           <Badge
             variant="outline"
             className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-xs"
           >
-            Gameboy Advance
+            {region}
           </Badge>
         </div>
-        <CardTitle className="text-2xl font-bold">Cyberpunk 2077</CardTitle>
+        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
         <CardDescription className="text-muted-foreground">
-          Cyberpunk 2077 is an open-world, action-adventure story set in Night
-          City, a megalopolis obsessed with power, glamour and body
-          modification.
+          {description}
         </CardDescription>
       </CardContent>
     </Card>

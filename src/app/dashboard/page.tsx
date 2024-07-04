@@ -11,6 +11,7 @@ import GenreForm from "@/components/GenreForm";
 import RegionForm from "@/components/RegionForm";
 import UploadRomForm from "@/components/UploadRomForm";
 import UploadImageForm from "@/components/UploadImageForm";
+import RomForm from "@/components/RomForm";
 import { SVGProps } from "react"
 
 export default function DashboardPage() {
@@ -19,29 +20,7 @@ export default function DashboardPage() {
   const renderForm = () => {
     switch (activeTab) {
       case "Roms":
-        return (
-          <>
-            <Card x-chunk="dashboard-04-chunk-1">
-              <CardHeader>
-                <CardTitle>Create Roms</CardTitle>
-                <CardDescription>
-                  This form allows you to create a new ROM
-                  for your store. you must upload the roms file before saving
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form>
-                  <Input placeholder="Store Name" />
-                </form>
-                <UploadRomForm />
-                <UploadImageForm />
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
-              </CardFooter>
-            </Card>
-          </>
-        );
+        return <RomForm />;
       case "Genres":
         return <GenreForm />;
       case "Regions":

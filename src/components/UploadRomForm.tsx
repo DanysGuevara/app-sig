@@ -1,10 +1,14 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
 import { uploadFile } from '@/lib/uploadFile';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const UploadRomForm: React.FC = () => {
+interface UploadRomFormProps {
+  onUpload: (file: File) => void;
+}
+
+const UploadRomForm: React.FC<UploadRomFormProps> = ({ onUpload }) => {
   const [file, setFile] = useState<File | null>(null);
   const [downloadURL, setDownloadURL] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,6 +17,7 @@ const UploadRomForm: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
+      onUpload(e.target.files[0]);
     }
   };
 
@@ -24,9 +29,9 @@ const UploadRomForm: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const url:any  = await uploadFile(file,'roms');
+      const url: any  = await uploadFile(file,'roms');
       setDownloadURL(url);
-    } catch (err:any) {
+    } catch (err: any) {
       setError(err.message);
     }
     setLoading(false);
